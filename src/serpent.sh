@@ -69,18 +69,20 @@ gameloop() {
         l   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "right" ]] || { DIRECTION="right"; playsnd move; } ;;
         " " ) ((PAUSE=!PAUSE)); playsnd pause
       esac
+
       ((PAUSE==1)) && STATE="$(set_color 7)$(set_color $SNAKECOLOR) PAUSED $(set_color 0)" || STATE="$(clrtoeol)"
 
       display_header
 
       ((PAUSE==1)) && sleep 0.5
       ((PAUSE == 0)) && {
-        if  snake_move; then
+        if snake_move; then
           [[ $DIRECTION == "left" || $DIRECTION == "right" ]] && sleep 0.0625
           [[ $DIRECTION == "up" || $DIRECTION == "down" ]] && sleep 0.125
         else   
           if (( TAIL == 1 )); then
             playsnd die2
+            unset TAIL
           else
             playsnd die
           fi

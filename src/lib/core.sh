@@ -73,10 +73,10 @@ snake_collision() {
   (( x > POS[BX] )) && return 0
 
   # walls
-  local i
-  for ((i=0; i<${#WALLPOS[@]}; i++)); do
-    (( wy=WALLPOS[i] >> 8 ))
-    (( wx=WALLPOS[i] & MASK ))
+  local pos
+  for pos in "${WALLPOS[@]}"; do
+    (( wy=pos >> 8 ))
+    (( wx=pos & MASK ))
     (( y == wy && x == wx )) && return 0
   done
 
@@ -225,15 +225,13 @@ snake_destroy() {
 }
 
 snake_exit() {
-  local idx i y x
-
-  idx="$(get_min_index)"
+  local pos y x
 
   playsnd enter
 
-  for ((i=idx;i<idx+SNAKELEN;i++)); do
-    (( y=SNAKEPOS[i] >> 8 ))
-    (( x=SNAKEPOS[i] & MASK ))
+  for pos in "${SNAKEPOS[@]}"; do
+    (( y=pos >> 8 ))
+    (( x=pos & MASK ))
     lecho $((y)) $((x)) " "
     sleep 0.0625
   done
@@ -241,30 +239,22 @@ snake_exit() {
 }
 
 eat_apple() {
-  local y x len low hi i
-  local ay ax av ac
+  local y x pos ay ax av ac
 
   # snake head position
   y=$1
   x=$2
 
-
-  ((len=${#APPLEPOS[@]}))
-
-  # low and high indexes
-  for hi in "${!APPLEPOS[@]}"; do :; done
-  ((low=hi-len+1))
-
-  for ((i=low; i<=hi; i++)); do
-    (( ay=APPLEPOS[i] >> 20 ))
-    (( ax=(APPLEPOS[i] >> 12) & MASK ))
-    (( ac=(APPLEPOS[i] >> 4) & MASK ))
-    (( av=APPLEPOS[i] & 0x0F ))
+  for pos in "${!APPLEPOS[@]}"; do
+    (( ay=APPLEPOS[pos] >> 20 ))
+    (( ax=(APPLEPOS[pos] >> 12) & MASK ))
+    (( ac=(APPLEPOS[pos] >> 4) & MASK ))
+    (( av=APPLEPOS[pos] & 0x0F ))
     (( y == ay && x == ax )) && {
       playsnd eat
       ((AV=av))
       ((AC=ac))
-      unset "APPLEPOS[$i]"
+      unset "APPLEPOS[$pos]"
       return 0
     }
   done
