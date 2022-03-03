@@ -1,4 +1,3 @@
-direction=down
-spawn=random
-target=60
-
+direction=right
+spawn=fixed
+target=36

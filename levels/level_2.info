@@ -1,8 +1,3 @@
 direction=left
 spawn=random
 target=40
-head=O
-tail_left=(
-tail_right=)
-tail_up=n
-tail_down=u
