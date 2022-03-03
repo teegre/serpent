@@ -59,7 +59,8 @@ gameloop() {
       display_level_intro
       IFS= read -rsN 100 -t 0.005
       sleep 2
-      init_level || { echo "WHAT??? IT'S OVER???"; exit; }
+      clear
+      init_level || { echo -e "\nWHAT???\nIT'S OVER???"; exit; }
       current_score=$SCORE
     else
       case $key in
@@ -115,5 +116,6 @@ init_tips || echo "failed."
 display_level_intro
 IFS= read -rsN 100 -t 0.005
 sleep 2
+clear
 init_level || { echo; exit; }
 gameloop
