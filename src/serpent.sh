@@ -71,11 +71,16 @@ gameloop() {
         " " ) ((PAUSE=!PAUSE)); playsnd pause
       esac
 
-      ((PAUSE==1)) &&
-        STATE="$(set_color 7)$(set_color $SNAKECOLOR) PAUSED $(set_color 0)" ||
-          STATE="$(clrtoeol)"
-
-      display_header
+      [[ $key == " " ]] && ((PAUSE==1)) && {
+        STATE="$(set_color 7)$(set_color $SNAKECOLOR) PAUSED $(set_color 0)"
+        display_header
+        key=""
+      }
+      [[ $key == " " ]] && ((PAUSE==0)) && {
+        STATE="$(clrtoeol)"
+        display_header
+        key=""
+      }
 
       ((PAUSE==1)) && sleep 0.75
       ((PAUSE == 0)) && {

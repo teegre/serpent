@@ -217,7 +217,9 @@ init_level() {
     SNAKEPOS+=( $(( (POS[SY] << 8) | (POS[SX]+i) )) )
   done
 
-  (( ${#APPLEPOS[@]} == 0 )) && random_target
+  display_header
+
+  [[ $SPAWN == "random" ]] && random_target
 
   return 0
 

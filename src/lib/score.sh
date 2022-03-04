@@ -82,11 +82,13 @@ compute_apple_score() {
     pts=100
   fi
   ((SCORE+=AV*(pts/end_time)))
+  display_header
 }
 
 compute_final_score() {
   local life
   (( ACCURACY >0 )) && ((SCORE+=ACCURACY*1000))
+  display_header
   ((life=(SCORE/10000)-(current_score/10000)))
   (( life > 0 )) &&
     while (( life > 0 )); do
