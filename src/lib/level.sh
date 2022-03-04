@@ -224,13 +224,17 @@ display_header() {
   # display level number, remaining lives and score
   # on the game screen.
 
-  local score_msg lives_msg
+  local score_msg lives_msg target_msg
   score_msg="SCORE: ${SCORE}"
   lives_msg="☻ × $LIFE"
+  target_msg="◀ ▶ $TARGET"
+
+  set_color $((LEVELCOLOR))
 
   lecho $((POS[TY]-2)) $((POS[TX])) "LEVEL $LEVEL "
-  lecho $((POS[TY]-2)) $((POS[BX]-${#score_msg})) " $score_msg "
   lecho $((POS[TY]-2)) $((((OFFX+POS[BX])/2)-${#lives_msg})) " $lives_msg "
+  lecho $((POS[TY]-2)) $((POS[BX]-${#score_msg})) " $score_msg "
+  lecho $((POS[TY]-1)) $((POS[TX])) " $target_msg "
   lecho $((POS[BY]+2)) $((OFFX)) "$STATE"
 }
 

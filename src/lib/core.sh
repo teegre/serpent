@@ -198,13 +198,14 @@ snake_destroy() {
     set_color $((COLORS[RANDOM%${#COLORS[@]}]))
     (( y=SNAKEPOS[i] >> 8 ))
     (( x=SNAKEPOS[i] & MASK ))
+    (( y == 0 || x == 0 )) && continue
     lecho $((y)) $((x)) "█"
     sleep 0.03125
   done
   set_color $((COLORS[RANDOM%${#COLORS[@]}]))
   set_color 7
   ((y == 0)) && ((y=(POS[BY]-POS[TY])/2))
-  lecho $((y)) $((OFFX+3)) " ▶▶▶ $SNAKELEN "
+  lecho $((y)) $((OFFX+3)) " ◀ ▶ $SNAKELEN "
   set_color 0
   
 }
