@@ -23,7 +23,7 @@
 #
 # LEVEL
 # C : 2022/02/28
-# M : 2022/02/28
+# M : 2022/03/03
 # D : 
 
 LEVELDIR="$HOME/projets/serpent/levels"
@@ -181,7 +181,6 @@ init_level() {
            # 0000000000000000000000VVVV
            
            APPLEPOS+=( $(( ((y+OFFY) << 20) | ((x+OFFX) << 12) | (color << 4) | char )) )
-           echo "apple $char y: $((y+OFFY)) x: $((x+OFFX)) c: $color v: $char → ${APPLEPOS[-1]}" >> .log
            line+="\e[${color}m\e[7m${char}\e[0m"
            ;;
         W) 
@@ -229,7 +228,7 @@ display_header() {
   score_msg="SCORE: ${SCORE}"
   lives_msg="☻ × $LIFE"
 
-  lecho $((POS[TY]-2)) $((POS[TX])) "LEVEL $LEVEL"
+  lecho $((POS[TY]-2)) $((POS[TX])) "LEVEL $LEVEL "
   lecho $((POS[TY]-2)) $((POS[BX]-${#score_msg})) " $score_msg "
   lecho $((POS[TY]-2)) $((((OFFX+POS[BX])/2)-${#lives_msg})) " $lives_msg "
   lecho $((POS[BY]+2)) $((OFFX)) "$STATE"
@@ -252,7 +251,7 @@ display_level_intro() {
   set_color 7
   lecho $((y)) $((x)) "$level_msg"
   set_color 0
-  ((color=COLORS[RANDOM%${#COLORS[@]}]))
+  # ((color=COLORS[RANDOM%${#COLORS[@]}]))
   set_color $color
   ((x=(COLUMNS-${#lives_msg})/2))
   lecho $((y+1)) $((x)) "$lives_msg"

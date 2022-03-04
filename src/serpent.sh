@@ -31,13 +31,13 @@ source "/home/tigerlost/projets/serpent/src/lib/core.sh"
 # MUTE=1
 
 LEVEL=${1-:1}
-PAUSE=0
 LIFE=9
-current_score=0
+PAUSE=0
 
 clear
 stty -echo
 hidecursor
+
 trap 'showcursor; stty echo; exit' INT EXIT
 
 # Gameloop
@@ -46,11 +46,10 @@ gameloop() {
     IFS= read -rsn 1 -t 0.005 key
 
     if (( END == 1 )); then
+
       snake_exit
-      ((SCORE+=(SNAKELEN-TARGET)*1000))
-
+      compute_final_score
       display_header
-
       unset END
       SNAKELEN=1
       sleep 2
@@ -62,20 +61,23 @@ gameloop() {
       clear
       init_level || { echo -e "\nWHAT???\nIT'S OVER???"; exit; }
       current_score=$SCORE
+      score_reset
     else
       case $key in
-        h   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "left" ]]  || { DIRECTION="left";  playsnd move; } ;;
-        j   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "down" ]]  || { DIRECTION="down";  playsnd move; } ;;
-        k   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "up" ]]    || { DIRECTION="up";    playsnd move; } ;;
-        l   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "right" ]] || { DIRECTION="right"; playsnd move; } ;;
+        h   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "left" ]]  || { DIRECTION="left";  ((KEYSTROKE++)); playsnd move; } ;;
+        j   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "down" ]]  || { DIRECTION="down";  ((KEYSTROKE++)); playsnd move; } ;;
+        k   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "up" ]]    || { DIRECTION="up";    ((KEYSTROKE++)); playsnd move; } ;;
+        l   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "right" ]] || { DIRECTION="right"; ((KEYSTROKE++)); playsnd move; } ;;
         " " ) ((PAUSE=!PAUSE)); playsnd pause
       esac
 
-      ((PAUSE==1)) && STATE="$(set_color 7)$(set_color $SNAKECOLOR) PAUSED $(set_color 0)" || STATE="$(clrtoeol)"
+      ((PAUSE==1)) &&
+        STATE="$(set_color 7)$(set_color $SNAKECOLOR) PAUSED $(set_color 0)" ||
+          STATE="$(clrtoeol)"
 
       display_header
 
-      ((PAUSE==1)) && sleep 0.5
+      ((PAUSE==1)) && sleep 0.75
       ((PAUSE == 0)) && {
         if snake_move; then
           [[ $DIRECTION == "left" || $DIRECTION == "right" ]] && sleep 0.0625
@@ -99,6 +101,7 @@ gameloop() {
           sleep 2
           clear
           init_level
+          score_reset
         fi
       }
     fi
@@ -112,10 +115,11 @@ gameloop() {
   echo
 }
 
-init_tips || echo "failed."
+init_tips || echo "no tips?"
 display_level_intro
 IFS= read -rsN 100 -t 0.005
 sleep 2
 clear
 init_level || { echo; exit; }
+score_reset
 gameloop

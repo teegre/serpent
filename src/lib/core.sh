@@ -23,19 +23,20 @@
 #
 # CORE
 # C : 2022/02/21
-# M : 2022/02/21
+# M : 2022/03/03
 # D : 
 
 # shellcheck source=/home/tigerlost/projets/serpent/src/lib/curse.sh
 source "/home/tigerlost/projets/serpent/src/lib/curse.sh"
 # shellcheck source=/home/tigerlost/projets/serpent/src/lib/level.sh
 source "/home/tigerlost/projets/serpent/src/lib/level.sh"
+# shellcheck source=/home/tigerlost/projets/serpent/src/lib/score.sh
+source "/home/tigerlost/projets/serpent/src/lib/score.sh"
 
 # SOUND ASSETS
 SNDDIR="$HOME"/projets/serpent/snd
 
-declare -i SNAKELEN  # snake length
-SNAKELEN=1   # length
+declare -i SNAKELEN=1  # snake length
 SH="☻" # snake head
 STL=""
 STR=""
@@ -146,7 +147,7 @@ snake_move() {
 
   idx="$(get_min_index)"
 
-  # lecho $((POS[BY]+1)) $((POS[TX]+1)) "${hy},${hx},$idx,$((idx+SNAKELEN-1)),${SNAKELEN},${#SNAKEPOS[@]} → $TARGET"; clrtoeol
+  # lecho $((POS[BY]+1)) $((POS[TX]+1)) "$((EPOCHSECONDS-start_time)) - ${hy},${hx},$idx,$((idx+SNAKELEN-1)),${SNAKELEN},${#SNAKEPOS[@]} → $TARGET - $ACCURACY"; clrtoeol
 
   # tail
   local t=0 
@@ -155,15 +156,6 @@ snake_move() {
     (( y=SNAKEPOS[i] >> 8 ))
     (( x=SNAKEPOS[i] & MASK ))
     ((hy == y && hx == x)) && {
-      {
-        echo "t=$((t)) i=$((i)) idx=$((idx)) len=$SNAKELEN hy=$((hy)) hx=$((hx)) y=$((y)) x=$((x))"
-        echo "snake position"
-        echo "${!SNAKEPOS[*]}"
-        echo "${SNAKEPOS[*]}"
-        echo "apples position"
-        echo "${!APPLEPOS[*]}"
-        echo "${APPLEPOS[*]}"
-      } >> ".log"
       playsnd hurt
       export TAIL=1
       sleep 0.5
@@ -178,22 +170,14 @@ snake_move() {
   if ((WON == 1)); then
     ((SNAKELEN+=AV))
     lecho $((y)) $((x)) "$ST"
-    local timer_end bonus
-    ((timer_end=EPOCHSECONDS-TIMER))
-    if ((timer_end == 0)); then
-      bonus=500
-      timer_end=1
-    else
-      bonus=100
-    fi
-    ((SCORE+=AV*(bonus/timer_end)))
+    compute_apple_score
     if (( SNAKELEN >= TARGET )); then
       random_target exit
     else
       SNAKECOLOR=$AC
-      ((TIMER=EPOCHSECONDS))
       random_target
     fi
+    timer_start
   elif (( SNAKELEN < ${#SNAKEPOS[@]} )); then
     idx="$(get_min_index)"
     lecho $((y)) $((x)) " "
@@ -202,6 +186,7 @@ snake_move() {
 
   # lecho $((y)) $((x)) "$ST"
   set_color 0
+
 
 }
 
@@ -235,7 +220,9 @@ snake_exit() {
     lecho $((y)) $((x)) " "
     sleep 0.0625
   done
+  compute_accuracy
   playsnd close
+  display_accuracy
 }
 
 eat_apple() {
@@ -255,6 +242,7 @@ eat_apple() {
       ((AV=av))
       ((AC=ac))
       unset "APPLEPOS[$pos]"
+      compute_accuracy
       return 0
     }
   done
@@ -307,7 +295,6 @@ random_target() {
         ((av=(RANDOM%9)+1))
         lecho $((y)) $((x)) $((av))
         playsnd spawn
-        ((TIMER=EPOCHSECONDS))
         set_color 0
         APPLEPOS+=( $(( (y << 20) | (x << 12) | (ac << 4) | av )) )
       fi
@@ -323,12 +310,13 @@ playsnd() {
   which aplay > /dev/null || { MUTE=1; return 1; }
   case $1 in
     level ) aplay "$SNDDIR/level.wav" 2> /dev/null ;;
-    eat   ) (aplay "$SNDDIR/eat.wav" 2> /dev/null) & ;;
     move  ) (aplay "$SNDDIR/move.wav" 2> /dev/null) & ;;
+    eat   ) (aplay "$SNDDIR/eat.wav" 2> /dev/null) & ;;
     spawn ) (aplay "$SNDDIR/spawn.wav" 2> /dev/null) & ;;
     exit  ) (aplay "$SNDDIR/exit.wav" 2> /dev/null) & ;;
     enter ) (aplay "$SNDDIR/enter.wav" 2> /dev/null) & ;;
     close ) aplay "$SNDDIR/close.wav" 2> /dev/null ;;
+    1up   ) (aplay "$SNDDIR/1up.wav" 2> /dev/null) & ;;
     pause ) aplay "$SNDDIR/pause.wav" 2> /dev/null ;;
     hurt  ) (aplay "$SNDDIR/hurt.wav" 2> /dev/null) & ;;
     die   ) (aplay "$SNDDIR/die.wav" 2> /dev/null) & ;;
