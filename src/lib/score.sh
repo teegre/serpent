@@ -113,9 +113,9 @@ oneup() {
   display_header
   set_color $((COLORS[1]))
   set_color 7
-  lecho $((POS[EY])) $((POS[EX]-5+7)) " 1UP "
+  lecho $((POS[EY])) $((POS[EX]+2)) " 1UP! "
   playsnd 1up
   sleep 0.75
   set_color 0
-  lecho $((POS[EY])) $((POS[EX]-5+7)) "     "
+  lecho $((POS[EY])) $((POS[EX]+2)) "      "
 }
