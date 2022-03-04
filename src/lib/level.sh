@@ -35,6 +35,8 @@ declare -a TIPS
 # level number
 declare -i LEVEL; LEVEL=1
 
+declare -i LEVELCOLOR
+
 declare -i OFFY # y offset | for centering level
 declare -i OFFX # x offset | on the screen
 
@@ -144,6 +146,7 @@ init_level() {
 
   local color
   color=$((COLORS[RANDOM%${#COLORS[@]}]))
+  ((LEVELCOLOR=color))
   line="$(set_color $color)"
 
   # board coordinates
