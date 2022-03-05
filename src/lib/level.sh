@@ -144,10 +144,8 @@ init_level() {
 
   set_level_offset $((h)) $((w))
 
-  local color
-  color=$((COLORS[RANDOM%${#COLORS[@]}]))
-  ((LEVELCOLOR=color))
-  line="$(set_color $color)"
+  LEVELCOLOR=$((COLORS[RANDOM%${#COLORS[@]}]))
+  set_color $((LEVELCOLOR))
 
   # board coordinates
   for y in "${!board[@]}"; do
@@ -184,17 +182,16 @@ init_level() {
            # 0000000000000000000000VVVV
            
            APPLEPOS+=( $(( ((y+OFFY) << 20) | ((x+OFFX) << 12) | (color << 4) | char )) )
-           line+="\e[${color}m\e[7m${char}\e[0m"
+           line+=" "
            ;;
         W) 
            WALLPOS+=( $(( ((y+OFFY) << 8) | (x+OFFX) )) )
-           line+="#"
+           line+=" "
            ;;
         E)
            POS[EY]=$((y+OFFY))
            POS[EX]=$((x+OFFX))
-           ((color=COLORS[RANDOM%${#COLORS[@]}]))
-           line+="\e[${color}m\e[7mE\e[0m"
+           line+=" "
            ;;
         *) 
            POS["$char"Y]=$((y+OFFY))
@@ -205,7 +202,7 @@ init_level() {
 
     # display line
     lecho $((y+OFFY)) $((OFFX)) "$line"
-    line="$(set_color $color)"
+    line=""
 
   done
 
@@ -215,6 +212,33 @@ init_level() {
   local i
   for ((i=0; i<SNAKELEN; i++)); do
     SNAKEPOS+=( $(( (POS[SY] << 8) | (POS[SX]+i) )) )
+  done
+
+  # display apples
+  local a c v
+  for a in "${APPLEPOS[@]}"; do
+    ((y=a >> 20))
+    ((x=(a >> 12) & MASK))
+    ((c=(a >> 4) & MASK))
+    ((v=a & 0x0F))
+    set_color $((c)); set_color 7
+    lecho $((y)) $((x)) $((v))
+  done
+
+  set_color $((LEVELCOLOR))
+
+  # display exit
+
+  lecho $((POS[EY])) $((POS[EX])) "E"
+
+  set_color 0
+  set_color $((LEVELCOLOR))
+
+  # display walls
+  for a in "${WALLPOS[@]}"; do
+    ((y=a >> 8))
+    ((x=a & MASK))
+    lecho $((y)) $((x)) "#"
   done
 
   display_header
