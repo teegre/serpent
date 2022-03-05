@@ -23,7 +23,7 @@
 #
 # LEVEL
 # C : 2022/02/28
-# M : 2022/03/03
+# M : 2022/03/05
 # D : 
 
 LEVELDIR="$HOME/projets/serpent/levels"
@@ -93,7 +93,7 @@ read_level_info() {
 
   local line param value
   while read -r line; do
-    [[ $line =~ [[:space:]]*(.+)[[:space:]]*=[[:space:]]*(.+)$ ]] && {
+    [[ $line =~ [[:space:]]*(.+)*[[:space:]]*=[[:space:]]*(.+)$ ]] && {
 
       param="${BASH_REMATCH[1],,}"
       value="${BASH_REMATCH[2]}"
@@ -102,11 +102,11 @@ read_level_info() {
         direction ) export DIRECTION="${value,,}";;
         spawn     ) export SPAWN="${value,,}"    ;;
         target    ) export TARGET="${value}"   ;;
-        head      ) export SH="${value}"       ;;
-        tail_left ) export STL="${value}"      ;;
-        tail_right) export STR="${value}"      ;;
-        tail_up   ) export STU="${value}"      ;;
-        tail_down ) export STD="${value}"      ;;
+        head_left ) export SHL="${value}"      ;;
+        head_right) export SHR="${value}"      ;;
+        head_up   ) export SHU="${value}"      ;;
+        head_down ) export SHD="${value}"      ;;
+        tail      ) export SB="${value}"       ;;
       esac
     }
   done < "$f"

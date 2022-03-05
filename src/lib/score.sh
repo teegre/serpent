@@ -23,7 +23,7 @@
 #
 # SCORE
 # C : 2022/03/03
-# M : 2022/02/03
+# M : 2022/02/04
 # D : Score calculation and related utilities.
 
 # scoring system
@@ -43,7 +43,7 @@
 # the player gets +1 accuracy pt if the condition is met,
 # otherwise accuracy is decremented.
 #
-# TODO: 1up
+# 1up:
 # get one extra life every 10k pts.
 
 declare -i start_time

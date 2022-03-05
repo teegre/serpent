@@ -23,7 +23,7 @@
 #
 # CORE
 # C : 2022/02/21
-# M : 2022/03/03
+# M : 2022/03/05
 # D : 
 
 # shellcheck source=/home/tigerlost/projets/serpent/src/lib/curse.sh
@@ -38,10 +38,11 @@ SNDDIR="$HOME"/projets/serpent/snd
 
 declare -i SNAKELEN=1  # snake length
 SH="☻" # snake head
-STL="◀"
-STR="▶"
-STU="▲"
-STD="▼"
+SHL="◀"
+SHR="▶"
+SHU="▲"
+SHD="▼"
+ST="*"
 AV=1 # apple
 AC=0 # apple color
 SNAKECOLOR=0
@@ -108,10 +109,10 @@ snake_move() {
   (( END == 1 )) || {
   
     case "$DIRECTION" in
-      left ) ((hx--)); ST="$STL" ;;
-      right) ((hx++)); ST="$STR" ;;
-      up   ) ((hy--)); ST="$STU" ;;
-      down ) ((hy++)); ST="$STD"
+      left ) ((hx--)); SH="$SHL" ;;
+      right) ((hx++)); SH="$SHR" ;;
+      up   ) ((hy--)); SH="$SHU" ;;
+      down ) ((hy++)); SH="$SHD"
     esac
 
   }
