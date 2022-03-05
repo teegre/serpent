@@ -38,10 +38,10 @@ SNDDIR="$HOME"/projets/serpent/snd
 
 declare -i SNAKELEN=1  # snake length
 SH="☻" # snake head
-STL=""
-STR=""
-STU=""
-STD=""
+STL="◀"
+STR="▶"
+STU="▲"
+STD="▼"
 AV=1 # apple
 AC=0 # apple color
 SNAKECOLOR=0
@@ -200,7 +200,7 @@ snake_destroy() {
     (( x=SNAKEPOS[i] & MASK ))
     (( y == 0 || x == 0 )) && continue
     lecho $((y)) $((x)) "█"
-    sleep 0.03125
+    # sleep 0.03125
   done
   set_color $((COLORS[RANDOM%${#COLORS[@]}]))
   set_color 7
