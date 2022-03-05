@@ -90,12 +90,15 @@ compute_final_score() {
   (( ACCURACY >0 )) && ((SCORE+=ACCURACY*1000))
   display_header
   ((life=(SCORE/10000)-(current_score/10000)))
-  (( life > 0 )) &&
+  if (( life > 0 )); then
     while (( life > 0 )); do
       ((life--))
       oneup 1
       sleep 0.25
     done
+  else
+    playsnd score
+  fi
 }
 
 display_accuracy() {

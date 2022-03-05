@@ -311,18 +311,19 @@ playsnd() {
   [[ $MUTE ]] && return 1
   which aplay > /dev/null || { MUTE=1; return 1; }
   case $1 in
-    level ) aplay "$SNDDIR/level.wav" 2> /dev/null ;;
-    move  ) (aplay "$SNDDIR/move.wav" 2> /dev/null) & ;;
-    eat   ) (aplay "$SNDDIR/eat.wav" 2> /dev/null) & ;;
+    level )  aplay "$SNDDIR/level.wav" 2> /dev/null    ;;
+    move  ) (aplay "$SNDDIR/move.wav"  2> /dev/null) & ;;
+    eat   ) (aplay "$SNDDIR/eat.wav"   2> /dev/null) & ;;
     spawn ) (aplay "$SNDDIR/spawn.wav" 2> /dev/null) & ;;
-    exit  ) (aplay "$SNDDIR/exit.wav" 2> /dev/null) & ;;
+    exit  ) (aplay "$SNDDIR/exit.wav"  2> /dev/null) & ;;
     enter ) (aplay "$SNDDIR/enter.wav" 2> /dev/null) & ;;
-    close ) aplay "$SNDDIR/close.wav" 2> /dev/null ;;
-    1up   ) (aplay "$SNDDIR/1up.wav" 2> /dev/null) & ;;
-    pause ) aplay "$SNDDIR/pause.wav" 2> /dev/null ;;
-    hurt  ) (aplay "$SNDDIR/hurt.wav" 2> /dev/null) & ;;
-    die   ) (aplay "$SNDDIR/die.wav" 2> /dev/null) & ;;
-    die2  ) (aplay "$SNDDIR/die2.wav" 2> /dev/null) & ;;
-    over  ) ( aplay "$SNDDIR/over.wav" 2> /dev/null) & ;;
+    close )  aplay "$SNDDIR/close.wav" 2> /dev/null    ;;
+    score )  aplay "$SNDDIR/score.wav" 2> /dev/null    ;;
+    1up   ) (aplay "$SNDDIR/1up.wav"   2> /dev/null) & ;;
+    pause )  aplay "$SNDDIR/pause.wav" 2> /dev/null    ;;
+    hurt  ) (aplay "$SNDDIR/hurt.wav"  2> /dev/null) & ;;
+    die   ) (aplay "$SNDDIR/die.wav"   2> /dev/null) & ;;
+    die2  ) (aplay "$SNDDIR/die2.wav"  2> /dev/null) & ;;
+    over  ) (aplay "$SNDDIR/over.wav"  2> /dev/null) & ;;
   esac
 }
