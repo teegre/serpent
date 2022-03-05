@@ -225,11 +225,12 @@ init_level() {
     lecho $((y)) $((x)) $((v))
   done
 
-  set_color $((LEVELCOLOR))
 
   # display exit
-
-  lecho $((POS[EY])) $((POS[EX])) "E"
+  [[ $SPAWN == "fixed" ]] && {
+    set_color $((LEVELCOLOR))
+    lecho $((POS[EY])) $((POS[EX])) "E"
+  }
 
   set_color 0
   set_color $((LEVELCOLOR))
