@@ -38,10 +38,10 @@
 #
 # accuracy:
 # if the level does not contain inside walls, the maximum 
-# number of moves allowed is 3 (which means 3 keystrokes),
-# otherwise it is set to 4.
-# the player gets +1 accuracy pt if the condition is met,
-# otherwise accuracy is decremented.
+# number of moves allowed to eat an apple is 3 (which means 
+# 3 keystrokes), otherwise it is set to 4.
+# the player gets +1 accuracy pt if the condition is met, -1
+# otherwise.
 #
 # 1up:
 # get one extra life every 10k pts.

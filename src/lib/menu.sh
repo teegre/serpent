@@ -23,7 +23,7 @@
 #
 # MENU
 # C : 2022/03/05
-# M : 2022/03/05
+# M : 2022/03/06
 # D : Simple menu system
 
 make_menu() {
@@ -32,25 +32,25 @@ make_menu() {
   # 
   # usage: make_menu <layout> <y> <x> <item1> <item2> ... <itemN>
   #
-  # layout: either "h" or "v"
+  # layout: either (h)orizontal or (v)ertical
   #
   # <h> <j> <k> <l> to navigate,
   # <space> to validate highlighted menu item.
 
   declare -a menuitems
 
-  local opt oy ox my mx item idx
+  local layout oy ox my mx item idx
   local selected key
 
-  opt=${1,,}; shift
+  layout=${1,,}; shift
   my=$1; shift
   mx=$1; shift
   ((oy=my)); ((ox=mx))
   selected=0
 
-  if [[ $opt =~ ^v.*$ ]]; then
+  if [[ $layout =~ ^v.*$ ]]; then
     vertical=1
-  elif [[ $opt =~ ^h.*$ ]]; then
+  elif [[ $layout =~ ^h.*$ ]]; then
     vertical=0
   else
     echo "error: invalid layout."
