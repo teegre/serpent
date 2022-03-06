@@ -23,7 +23,7 @@
 #
 # SCORE
 # C : 2022/03/03
-# M : 2022/02/04
+# M : 2022/02/05
 # D : Score calculation and related utilities.
 
 # scoring system
@@ -87,7 +87,11 @@ compute_apple_score() {
 
 compute_final_score() {
   local life
-  (( ACCURACY >0 )) && ((SCORE+=ACCURACY*1000))
+  if (( ACCURACY >0 )); then
+    ((SCORE+=ACCURACY*1000))
+  else
+    return
+  fi
   display_header
   ((life=(SCORE/10000)-(current_score/10000)))
   if (( life > 0 )); then
