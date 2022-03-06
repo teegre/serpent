@@ -1,5 +1,5 @@
 PROGNAME  ?= serpent
-PREFIX    ?= /.local
+PREFIX    ?= $(HOME)/.local
 BINDIR    ?= $(PREFIX)/bin
 LIBDIR    ?= $(PREFIX)/lib/$(PROGNAME)
 SHAREDIR  ?= $(PREFIX)/share/$(PROGNAME)
