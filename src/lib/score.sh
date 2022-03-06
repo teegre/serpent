@@ -58,13 +58,21 @@ timer_start() {
   ((start_time=EPOCHSECONDS))
 }
 
-score_reset() {
+set_level_accuracy() {
   ACCURACY=0
   KEYSTROKE=0
   (( ${#WALLPOS[@]} > 0 )) && 
     MAXMOVE=4 || 
     MAXMOVE=3
   timer_start
+}
+
+score_reset() {
+  SCORE=0
+  current_score=0
+  ACCURACY=0
+  KEYSTROKE=0
+  MAXMOVE=0
 }
 
 compute_accuracy() {

@@ -24,7 +24,7 @@
 # CORE
 # C : 2022/02/21
 # M : 2022/03/06
-# D : 
+# D : Core functions.
 
 # shellcheck source=/home/tigerlost/.local/lib/serpent/curse.sh
 source "$HOME/.local/lib/serpent/curse.sh"
@@ -34,6 +34,9 @@ source "$HOME/.local/lib/serpent/level.sh"
 source "$HOME/.local/lib/serpent/score.sh"
 # shellcheck source=/home/tigerlost/.local/lib/serpent/menu.sh
 source "$HOME/.local/lib/serpent/menu.sh"
+
+# shellcheck source=/home/tigerlost/.local/lib/serpent/title.sh
+source "$HOME/.local/lib/serpent/title.sh"
 
 # ASSETS
 RESDIR="$HOME/.local/share/serpent/res"
@@ -50,8 +53,13 @@ AV=1 # apple
 AC=0 # apple color
 SNAKECOLOR=0
 LEVEL=1
-TARGET=30 # target snake length
-SCORE=0
+
+reset_game() {
+  LEVEL=1
+  LIFE=9
+  score_reset
+  unset POS SNAKEPOS APPLEPOS WALLPOS
+}
 
 get_min_index() {
   local len low hi

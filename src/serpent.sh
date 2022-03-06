@@ -49,19 +49,12 @@ gameloop() {
 
       snake_exit
       compute_final_score
-      display_header
       unset END
-      SNAKELEN=1
       sleep 2
       ((LEVEL++))
-      clear
-      display_level_intro
-      IFS= read -rsN 100 -t 0.005
-      sleep 2
-      clear
-      init_level || { echo -e "\nWHAT???\nIT'S OVER???"; exit; }
+      start_level || break
       current_score=$SCORE
-      score_reset
+
     else
       case $key in
         h   ) ((PAUSE==1)) && continue; [[ $DIRECTION == "left" ]]  || { DIRECTION="left";  ((KEYSTROKE++)); playsnd move; } ;;
@@ -74,10 +67,10 @@ gameloop() {
       [[ $key == " " ]] && ((PAUSE==1)) && {
         STATE="$(set_color 7) PAUSED $(set_color 0)"
         display_header
-        make_menu h $((POS[BY]+2)) $((POS[TX]+8)) "CONTINUE" "QUIT"
+        make_menu h $((POS[BY]+2)) $((POS[TX]+8)) "CONTINUE" "TITLE"
         case $? in
           0) playsnd pause; ((PAUSE=0)) ;;
-          1) playsnd die2; echo; exit
+          1) playsnd die2;  ((PAUSE=0)); reset_game; init_title || { clear; exit; } ;;
         esac
       }
       [[ $key == " " ]] && ((PAUSE==0)) && {
@@ -103,14 +96,7 @@ gameloop() {
           ((LIFE--))
           ((LIFE==-1)) && break
           SCORE=$current_score
-          SNAKELEN=1
-          clear
-          display_level_intro
-          IFS= read -rsN 100 -t 0.005
-          sleep 2
-          clear
-          init_level
-          score_reset
+          start_level
         fi
       }
     fi
@@ -125,10 +111,5 @@ gameloop() {
 }
 
 init_tips || echo "no tips?"
-display_level_intro
-IFS= read -rsN 100 -t 0.005
-sleep 2
-clear
-init_level || { echo; exit; }
-score_reset
+init_title || exit
 gameloop

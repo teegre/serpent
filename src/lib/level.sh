@@ -130,6 +130,8 @@ init_level() {
   declare -ga APPLEPOS
   declare -ga WALLPOS
 
+  SNAKELEN=1
+
   local map
   map="${LEVELDIR}/level_${LEVEL}.map"
 
@@ -277,6 +279,8 @@ display_level_intro() {
 
   local y x color
 
+  clear
+
   get_scr_size
   ((y=(LINES/2)-1))
   ((x=(COLUMNS-${#level_msg})/2))
@@ -297,4 +301,13 @@ display_level_intro() {
   }
   set_color 0
   playsnd level
+}
+
+start_level() {
+  display_level_intro
+  IFS= read -rsN 100 -t 0.005
+  sleep 2
+  clear
+  init_level
+  set_level_accuracy
 }
