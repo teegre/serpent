@@ -36,7 +36,7 @@ source "$HOME/.local/lib/serpent/score.sh"
 source "$HOME/.local/lib/serpent/menu.sh"
 
 # ASSETS
-RESDIR="$HOME/.local/share/serpent"
+RESDIR="$HOME/.local/share/serpent/res"
 SNDDIR="$RESDIR/snd"
 
 declare -i SNAKELEN=1  # snake length
