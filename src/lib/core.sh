@@ -32,17 +32,20 @@ source "/home/tigerlost/projets/serpent/src/lib/curse.sh"
 source "/home/tigerlost/projets/serpent/src/lib/level.sh"
 # shellcheck source=/home/tigerlost/projets/serpent/src/lib/score.sh
 source "/home/tigerlost/projets/serpent/src/lib/score.sh"
+# shellcheck source=/home/tigerlost/projets/serpent/src/lib/menu.sh
+source "/home/tigerlost/projets/serpent/src/lib/menu.sh"
 
-# SOUND ASSETS
-SNDDIR="$HOME"/projets/serpent/snd
+# ASSETS
+RESDIR="$HOME"/projets/serpent/res
+SNDDIR="$RESDIR"/snd
 
 declare -i SNAKELEN=1  # snake length
-SH="☻" # snake head
-SHL="◀"
-SHR="▶"
-SHU="▲"
-SHD="▼"
-ST="*"
+# SH="☻" # snake head
+SHL="◀" # snake head pointing left
+SHR="▶" # snake head pointing right
+SHU="▲" # snake head pointing up
+SHD="▼" # snake head pointing down
+ST="O"
 AV=1 # apple
 AC=0 # apple color
 SNAKECOLOR=0
@@ -87,7 +90,7 @@ snake_collision() {
 }
 
 snake_out() {
-  # detect whether snake has entered an exit
+  # detect whether snake has entered an exit door
 
   local y x
 
@@ -148,8 +151,6 @@ snake_move() {
 
   idx="$(get_min_index)"
 
-  # lecho $((POS[BY]+1)) $((POS[TX]+1)) "$((EPOCHSECONDS-start_time)) - ${hy},${hx},$idx,$((idx+SNAKELEN-1)),${SNAKELEN},${#SNAKEPOS[@]} → $TARGET - $ACCURACY"; clrtoeol
-
   # tail
   local t=0 
   for ((i=idx+1;i<idx+${#SNAKEPOS[@]}-1;i++)); do
@@ -185,10 +186,7 @@ snake_move() {
     unset "SNAKEPOS[$idx]"
   fi
 
-  # lecho $((y)) $((x)) "$ST"
   set_color 0
-
-
 }
 
 snake_destroy() {
@@ -257,9 +255,9 @@ random_target() {
 
   restart=0
 
-  [[ $1 == "exit" ]] && { local show_exit=1; }
-  (( ${#APPLEPOS[@]} > 0 && show_exit == 0 )) && return
   [[ $SPAWN != "random" && ${POS[EY]} ]] && return
+  [[ $1 == "exit" ]] && { local show_exit=1; }
+  # (( ${#APPLEPOS[@]} > 0 && show_exit == 0 )) && return
 
   while :; do
 
