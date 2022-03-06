@@ -23,11 +23,11 @@
 #
 # LEVEL
 # C : 2022/02/28
-# M : 2022/03/05
-# D : 
+# M : 2022/03/06
+# D : Level display and related functions.
 
-LEVELDIR="$HOME/projets/serpent/levels"
-TIPFILE="$HOME/projets/serpent/res/tips.info"
+LEVELDIR="$HOME/.local/share/serpent/res/levels"
+TIPFILE="$HOME/.local/share/serpent/res/tips.info"
 
 # tips
 declare -a TIPS

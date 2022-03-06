@@ -22,11 +22,11 @@
 #
 # SERPENT
 # C : 2022/02/21
-# M : 2022/02/21
-# D : 
+# M : 2022/03/06
+# D : Main program.
 
-# shellcheck source=/home/tigerlost/projets/serpent/src/lib/core.sh
-source "/home/tigerlost/projets/serpent/src/lib/core.sh"
+# shellcheck source=/home/tigerlost/.local/lib/serpent/core.sh
+source "$HOME/.local/lib/serpent/core.sh"
 
 # MUTE=1
 

@@ -23,21 +23,21 @@
 #
 # CORE
 # C : 2022/02/21
-# M : 2022/03/05
+# M : 2022/03/06
 # D : 
 
-# shellcheck source=/home/tigerlost/projets/serpent/src/lib/curse.sh
-source "/home/tigerlost/projets/serpent/src/lib/curse.sh"
-# shellcheck source=/home/tigerlost/projets/serpent/src/lib/level.sh
-source "/home/tigerlost/projets/serpent/src/lib/level.sh"
-# shellcheck source=/home/tigerlost/projets/serpent/src/lib/score.sh
-source "/home/tigerlost/projets/serpent/src/lib/score.sh"
-# shellcheck source=/home/tigerlost/projets/serpent/src/lib/menu.sh
-source "/home/tigerlost/projets/serpent/src/lib/menu.sh"
+# shellcheck source=/home/tigerlost/.local/lib/serpent/curse.sh
+source "$HOME/.local/lib/serpent/curse.sh"
+# shellcheck source=/home/tigerlost/.local/lib/serpent/level.sh
+source "$HOME/.local/lib/serpent/level.sh"
+# shellcheck source=/home/tigerlost/.local/lib/serpent/score.sh
+source "$HOME/.local/lib/serpent/score.sh"
+# shellcheck source=/home/tigerlost/.local/lib/serpent/menu.sh
+source "$HOME/.local/lib/serpent/menu.sh"
 
 # ASSETS
-RESDIR="$HOME"/projets/serpent/res
-SNDDIR="$RESDIR"/snd
+RESDIR="$HOME/.local/share/serpent"
+SNDDIR="$RESDIR/snd"
 
 declare -i SNAKELEN=1  # snake length
 # SH="☻" # snake head
