@@ -72,9 +72,13 @@ gameloop() {
       esac
 
       [[ $key == " " ]] && ((PAUSE==1)) && {
-        STATE="$(set_color 7)$(set_color $SNAKECOLOR) PAUSED $(set_color 0)"
+        STATE="$(set_color 7) PAUSED $(set_color 0)"
         display_header
-        key=""
+        make_menu h $((POS[BY]+2)) $((POS[TX]+8)) "CONTINUE" "QUIT"
+        case $? in
+          0) playsnd pause; ((PAUSE=0)) ;;
+          1) playsnd die2; echo; exit
+        esac
       }
       [[ $key == " " ]] && ((PAUSE==0)) && {
         STATE="$(clrtoeol)"
