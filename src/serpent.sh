@@ -52,7 +52,7 @@ gameloop() {
       unset END
       sleep 2
       ((LEVEL++))
-      start_level || break
+      start_level || return 1
       current_score=$SCORE
 
     else
@@ -70,7 +70,7 @@ gameloop() {
         make_menu h $((POS[BY]+2)) $((POS[TX]+8)) "CONTINUE" "TITLE"
         case $? in
           0) playsnd pause; ((PAUSE=0)) ;;
-          1) playsnd die2;  ((PAUSE=0)); reset_game; init_title || { clear; exit; } ;;
+          1) ((PAUSE=0)); STATE=""; reset_game; return 0;
         esac
       }
       [[ $key == " " ]] && ((PAUSE==0)) && {
@@ -104,12 +104,21 @@ gameloop() {
 
   playsnd over
   set_color 7
-  set_color $SNAKECOLOR
+  set_color $((LEVELCOLOR))
   lecho $((POS[BY]+2)) $((OFFX)) " GAME OVER "
   IFS= read -rsN 100 -t 0.005
-  echo
+  sleep 2
+  
 }
 
+running=1
 init_tips || echo "no tips?"
-init_title || exit
-gameloop
+while (( running == 1 )); do
+  if init_title; then
+    gameloop || running=0;
+  else
+    running=0
+  fi
+done
+
+clear
