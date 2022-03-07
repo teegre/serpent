@@ -106,6 +106,7 @@ gameloop() {
   set_color 7
   set_color $((LEVELCOLOR))
   lecho $((POS[BY]+2)) $((OFFX)) " GAME OVER "
+  set_color 0
   IFS= read -rsN 100 -t 0.005
   sleep 2
   
