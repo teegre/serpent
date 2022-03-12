@@ -109,6 +109,7 @@ gameloop() {
   set_color 0
   IFS= read -rsN 100 -t 0.005
   sleep 2
+  reset_game # TODO continue!! (with countdown and music => reset lives + score
   
 }
 
