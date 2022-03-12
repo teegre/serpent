@@ -23,7 +23,7 @@
 #
 # LEVEL
 # C : 2022/02/28
-# M : 2022/03/08
+# M : 2022/03/12
 # D : Level display and related functions.
 
 LEVELDIR="$HOME/.local/share/serpent/res/levels"
@@ -319,6 +319,6 @@ start_level() {
   IFS= read -rsN 100 -t 0.005
   sleep 2
   clear
-  init_level
+  init_level || return 1
   set_level_accuracy
 }
