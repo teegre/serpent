@@ -23,7 +23,7 @@
 #
 # CORE
 # C : 2022/02/21
-# M : 2022/03/06
+# M : 2022/03/08
 # D : Core functions.
 
 # shellcheck source=/home/tigerlost/.local/lib/serpent/curse.sh
@@ -44,15 +44,9 @@ SNDDIR="$RESDIR/snd"
 
 declare -i SNAKELEN=1  # snake length
 # SH="☻" # snake head
-SHL="◀" # snake head pointing left
-SHR="▶" # snake head pointing right
-SHU="▲" # snake head pointing up
-SHD="▼" # snake head pointing down
-ST="O"
 AV=1 # apple
 AC=0 # apple color
 SNAKECOLOR=0
-LEVEL=1
 
 reset_game() {
   LEVEL=1
@@ -74,10 +68,11 @@ snake_collision() {
   # snake -> level boundaries
   # snake -> walls
 
-  local y x wy wx
+  local pos y x
 
-  y=$1
-  x=$2
+  ((pos=SNAKEPOS[-1]))
+  ((y=pos >> 8))
+  ((x=pos & MASK))
   
   # level boundaries
   (( y < POS[TY] )) && return 0
@@ -86,12 +81,7 @@ snake_collision() {
   (( x > POS[BX] )) && return 0
 
   # walls
-  local pos
-  for pos in "${WALLPOS[@]}"; do
-    (( wy=pos >> 8 ))
-    (( wx=pos & MASK ))
-    (( y == wy && x == wx )) && return 0
-  done
+  [[ ${WALLPOS["$pos"]} == 1 ]] && return 0
 
   return 1
 
@@ -128,7 +118,7 @@ snake_move() {
 
   }
 
-  snake_collision $((hy)) $((hx)) && return 1
+  snake_collision && return 1
 
   set_color $SNAKECOLOR
 

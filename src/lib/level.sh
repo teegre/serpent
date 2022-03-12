@@ -23,7 +23,7 @@
 #
 # LEVEL
 # C : 2022/02/28
-# M : 2022/03/06
+# M : 2022/03/08
 # D : Level display and related functions.
 
 LEVELDIR="$HOME/.local/share/serpent/res/levels"
@@ -88,6 +88,11 @@ read_level_info() {
     export DIRECTION="right"
     export SPAWN="random"
     export TARGET=30
+    export SHL="◀" # snake head pointing left
+    export SHR="▶" # snake head pointing right
+    export SHU="▲" # snake head pointing up
+    export SHD="▼" # snake head pointing down
+    export ST="O"
     return 1
   }
 
@@ -106,10 +111,16 @@ read_level_info() {
         head_right) export SHR="${value}"      ;;
         head_up   ) export SHU="${value}"      ;;
         head_down ) export SHD="${value}"      ;;
-        tail      ) export SB="${value}"       ;;
+        tail      ) export ST="${value}"       ;;
       esac
     }
   done < "$f"
+
+  SHL="${SHL:-"◀"}"
+  SHR="${SHR:-"▶"}"
+  SHU="${SHU:-"▲"}"
+  SHD="${SHD:-"▼"}"
+  ST="${ST:-"O"}"
 
   return 0
 }
@@ -128,7 +139,7 @@ init_level() {
   # arrays containing packed coordinates.
   declare -ga SNAKEPOS
   declare -ga APPLEPOS
-  declare -ga WALLPOS
+  declare -gA WALLPOS
 
   SNAKELEN=1
 
@@ -187,7 +198,7 @@ init_level() {
            line+=" "
            ;;
         W) 
-           WALLPOS+=( $(( ((y+OFFY) << 8) | (x+OFFX) )) )
+           WALLPOS[$(( ((y+OFFY) << 8) | (x+OFFX) ))]=1
            line+=" "
            ;;
         E)
@@ -238,7 +249,7 @@ init_level() {
   set_color $((LEVELCOLOR))
 
   # display walls
-  for a in "${WALLPOS[@]}"; do
+  for a in "${!WALLPOS[@]}"; do
     ((y=a >> 8))
     ((x=a & MASK))
     lecho $((y)) $((x)) "#"
