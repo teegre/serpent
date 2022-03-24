@@ -23,7 +23,7 @@
 #
 # CORE
 # C : 2022/02/21
-# M : 2022/03/08
+# M : 2022/03/24
 # D : Core functions.
 
 # shellcheck source=/home/tigerlost/.local/lib/serpent/curse.sh
@@ -268,9 +268,11 @@ random_target() {
     done
     (( restart == 0 )) && {
       # check walls
-      for c in "${WALLPOS[@]}"; do
-        ((y == (c >> 8) && x == (c & MASK))) && { restart=1; break; }
-      done
+      [[ ${WALLPOS[$((y << 8 | x))]} ]] && continue
+
+      # for c in "${WALLPOS[@]}"; do
+        # ((y == (c >> 8) && x == (c & MASK))) && { restart=1; break; }
+      # done
     }
 
     (( restart == 0 )) && {
